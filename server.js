@@ -2,10 +2,9 @@ const express = require('express');
 const app = express();
 const pool = require('./database'); 
 
-app.use(express.json({ limit: '50mb' })); // รองรับภาพสลิปขนาดใหญ่
+app.use(express.json({ limit: '50mb' })); 
 app.use(express.static('public'));
 
-// ระบบดึงรูปภาพสลิปให้เพื่อนดูได้เลยโดยไม่พึ่งไฟล์ในเครื่อง
 app.get('/api/slip/:id', async (req, res) => {
     try {
         const result = await pool.query('SELECT "slipLink" FROM payments WHERE id = $1', [req.params.id]);
@@ -14,9 +13,7 @@ app.get('/api/slip/:id', async (req, res) => {
             const imgBuffer = Buffer.from(base64, 'base64');
             res.writeHead(200, { 'Content-Type': 'image/png' });
             res.end(imgBuffer);
-        } else {
-            res.send("ไม่มีสลิป");
-        }
+        } else { res.send("ไม่มีสลิป"); }
     } catch(e) { res.send("Error"); }
 });
 
@@ -27,13 +24,15 @@ app.get('/api', async (req, res) => {
             const ledRes = await pool.query('SELECT * FROM ledger ORDER BY date ASC');
             const spRes = await pool.query('SELECT * FROM special_targets');
             
-            // แปลงสลิปเป็นลิงก์ให้ฝั่งหน้าบ้าน
             const formattedPayments = payRes.rows.map(row => {
                 if (row.slipLink && row.slipLink !== "-") { row.slipLink = `/api/slip/${row.id}`; }
                 return row;
             });
             res.json({ payments: formattedPayments, ledger: ledRes.rows, specialTargets: spRes.rows });
-        } catch (err) { res.json({ payments: [], ledger: [], specialTargets: [] }); }
+        } catch (err) { 
+            console.error(err);
+            res.json({ payments: [], ledger: [], specialTargets: [] }); 
+        }
     }
 });
 
@@ -44,12 +43,15 @@ app.post('/api', async (req, res) => {
             let slipData = "-";
             if (data.fileData && data.fileData !== "-") { slipData = data.fileData; }
 
+            // แปลงเลขที่ให้เป็นตัวเลขถ้วนๆ ป้องกันการขัดแย้งของประเภทข้อมูลใน Postgres
+            const studentNum = parseInt(data.studentNo);
+
             const result = await pool.query(
                 'INSERT INTO payments ("studentNo", type, "slipLink", amount) VALUES ($1, $2, $3, $4) RETURNING id',
-                [data.studentNo, data.type, slipData, data.amount]
+                [studentNum, data.type, slipData, data.amount]
             );
             const newPaymentId = result.rows[0].id;
-            const desc = `รับเงินจากเลขที่ ${data.studentNo} (${data.type})`;
+            const desc = `รับเงินจากเลขที่ ${studentNum} (${data.type})`;
 
             await pool.query(
                 "INSERT INTO ledger (description, type, amount) VALUES ($1, 'เงินห้อง', $2)",
@@ -71,7 +73,7 @@ app.post('/api', async (req, res) => {
             } else { res.json({ status: "error", message: "ไม่พบรายการนี้" }); }
         }
         else if (data.action === "addSpecialTarget") {
-            const perPerson = Math.ceil(data.totalAmount / 30);
+            const perPerson = Math.ceil(data.totalAmount / 31); // ปรับหาร 31 คนออโต้ตามที่คุณอัปเดตสมาชิกล่าสุด
             await pool.query(
                 'INSERT INTO special_targets (title, "totalAmount", "perPerson") VALUES ($1, $2, $3)',
                 [data.title, data.totalAmount, perPerson]

@@ -28,10 +28,10 @@ app.get('/api', async (req, res) => {
                 if (row.slipLink && row.slipLink !== "-") { row.slipLink = `/api/slip/${row.id}`; }
                 return row;
             });
-            res.json({ payments: formattedPayments, ledger: ledRes.rows, specialTargets: spRes.rows });
+            res.json({ status: "success", payments: formattedPayments, ledger: ledRes.rows, specialTargets: spRes.rows });
         } catch (err) { 
             console.error(err);
-            res.json({ payments: [], ledger: [], specialTargets: [] }); 
+            res.json({ status: "error", message: "ดึงข้อมูลล้มเหลว" }); 
         }
     }
 });
@@ -43,9 +43,7 @@ app.post('/api', async (req, res) => {
             let slipData = "-";
             if (data.fileData && data.fileData !== "-") { slipData = data.fileData; }
 
-            // แปลงเลขที่ให้เป็นตัวเลขถ้วนๆ ป้องกันการขัดแย้งของประเภทข้อมูลใน Postgres
             const studentNum = parseInt(data.studentNo);
-
             const result = await pool.query(
                 'INSERT INTO payments ("studentNo", type, "slipLink", amount) VALUES ($1, $2, $3, $4) RETURNING id',
                 [studentNum, data.type, slipData, data.amount]
@@ -57,7 +55,7 @@ app.post('/api', async (req, res) => {
                 "INSERT INTO ledger (description, type, amount) VALUES ($1, 'เงินห้อง', $2)",
                 [desc, data.amount]
             );
-            res.json({ status: "success", message: "บันทึกยอดเงินเรียบร้อย!", paymentId: newPaymentId });
+            res.json({ status: "success", message: "✅ บันทึกยอดเงินเข้ากองกลางเรียบร้อย!", paymentId: newPaymentId });
         }
         else if (data.action === "undoPayment") {
             const payRes = await pool.query("SELECT * FROM payments WHERE id = $1", [data.paymentId]);
@@ -73,7 +71,7 @@ app.post('/api', async (req, res) => {
             } else { res.json({ status: "error", message: "ไม่พบรายการนี้" }); }
         }
         else if (data.action === "addSpecialTarget") {
-            const perPerson = Math.ceil(data.totalAmount / 31); // ปรับหาร 31 คนออโต้ตามที่คุณอัปเดตสมาชิกล่าสุด
+            const perPerson = Math.ceil(data.totalAmount / 31); 
             await pool.query(
                 'INSERT INTO special_targets (title, "totalAmount", "perPerson") VALUES ($1, $2, $3)',
                 [data.title, data.totalAmount, perPerson]
@@ -102,4 +100,4 @@ app.post('/api', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ ระบบทำงานที่พอร์ต ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 เซิร์ฟเวอร์เริ่มทำงานที่พอร์ต ${PORT}`));

@@ -53,7 +53,6 @@
         </div>
 
         <div id="walletTabContent" class="space-y-4 md:space-y-6">
-            
             <div class="bg-white p-5 md:p-6 rounded-3xl shadow-sm border border-slate-100 space-y-4">
                 <div class="flex flex-col gap-2 border-b border-slate-100 pb-3">
                     <div class="flex justify-between items-center">
@@ -83,7 +82,7 @@
                         <input type="file" id="slipFile" accept="image/*" class="w-full text-sm text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
                     </div>
                 </div>
-                <button onclick="submitPayment('userNo', 'payType', 'customAmount', 'slipFile', this)" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-base hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition active:scale-[0.98]">🚀 บันทึกยอดเข้าบัญชี</button>
+                <button id="submitBtn" onclick="submitPayment('userNo', 'payType', 'customAmount', 'slipFile')" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-base hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition active:scale-[0.98]">🚀 บันทึกยอดเข้าบัญชี</button>
                 
                 <div id="undoSection" class="hidden mt-4 p-4 bg-rose-50 border-2 border-rose-200 rounded-xl text-center animate-pulse">
                     <span class="text-xs md:text-sm text-rose-700 block mb-3 font-bold">เพิ่งกดโอนผิดคนใช่ไหม? (ทำรายการได้ภายใน 5 นาที)</span>
@@ -101,7 +100,6 @@
                         </div>
                         <button onclick="createSpecialTarget()" class="w-full bg-rose-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">⚡ คำนวณและตั้งเป้าหมาย</button>
                     </div>
-
                     <div class="bg-amber-50 p-4 rounded-3xl border border-amber-200 space-y-3">
                         <h3 class="font-bold text-amber-900 text-sm">💵 คีย์เงินแทนสมาชิก</h3>
                         <div class="grid grid-cols-2 gap-2 text-sm">
@@ -112,9 +110,8 @@
                             </select>
                             <input type="number" id="adminCashAmount" placeholder="ยอดเงิน" class="border p-2.5 rounded-xl bg-white font-bold">
                         </div>
-                        <button onclick="submitPayment('adminStudentId', 'adminPayType', 'adminCashAmount', null, this)" class="w-full bg-amber-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">💾 บันทึก</button>
+                        <button id="adminSubmitBtn" onclick="submitPayment('adminStudentId', 'adminPayType', 'adminCashAmount', null, true)" class="w-full bg-amber-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">💾 บันทึก</button>
                     </div>
-
                     <div class="bg-emerald-50 p-4 rounded-3xl border border-emerald-200 space-y-3">
                         <h3 class="font-bold text-emerald-900 text-sm">📝 บันทึกรายจ่าย/เงินนอก</h3>
                         <div class="grid grid-cols-2 gap-2 text-sm">
@@ -128,7 +125,6 @@
                         <button onclick="saveDirectLedger()" class="w-full bg-emerald-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">💾 บันทึก</button>
                     </div>
                 </div>
-
                 <div id="adminTargetListZone" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
                     <h4 class="font-bold text-sm text-slate-700 mb-2">📋 รายการยอดเฉพาะกิจปัจจุบัน</h4>
                     <div id="targetListContainer" class="space-y-2"></div>
@@ -218,7 +214,6 @@
         let IsAdmin = false;
         let GLOBAL_QUOTA = 0; 
         let GLOBAL_SPECIAL_QUOTA = 0; 
-        
         let lastPaymentId = null;
         let undoTimeout = null;
         
@@ -329,6 +324,11 @@
             fetch(`${BACKEND_URL}?action=getDashboardData`)
             .then(res => res.json())
             .then(data => {
+                if(data.status === "error") {
+                    console.error("Database connection issue.");
+                    return;
+                }
+
                 const memberBody = document.getElementById("memberTableBody");
                 const directLedgerBody = document.getElementById("directLedgerTableBody");
                 const targetList = document.getElementById("targetListContainer");
@@ -362,10 +362,12 @@
 
                 if (data.payments) {
                     data.payments.forEach(row => {
-                        if (row.type === 'ยอดเฉพาะกิจ') {
-                            studentWallets[row.studentNo].special += Number(row.amount);
-                        } else {
-                            studentWallets[row.studentNo].regular += Number(row.amount);
+                        if (studentWallets[row.studentNo]) {
+                            if (row.type === 'ยอดเฉพาะกิจ') {
+                                studentWallets[row.studentNo].special += Number(row.amount);
+                            } else {
+                                studentWallets[row.studentNo].regular += Number(row.amount);
+                            }
                         }
                     });
                 }
@@ -460,7 +462,7 @@
                 document.getElementById("totalExpense").innerText = expense + " บาท";
                 document.getElementById("netBalance").innerText = (income - expense) + " บาท";
                 document.getElementById("balanceCard").className = (income - expense) >= 0 ? "bg-emerald-50 p-3 rounded-2xl text-emerald-800 flex flex-col justify-center" : "bg-red-50 p-3 rounded-2xl text-red-800 flex flex-col justify-center shadow-inner";
-            });
+            }).catch(err => console.error("Fetch Error:", err));
         }
 
         function createSpecialTarget() {
@@ -491,8 +493,7 @@
             }
         }
 
-        // โค้ดส่วนนี้แก้ไขบั๊กอัปโหลดเงินค้างเรียบร้อยแล้วครับ
-        function submitPayment(idNo, idType, idAmt, idFile, btnElement) {
+        function submitPayment(idNo, idType, idAmt, idFile, isAdminPanel = false) {
             const studentNo = document.getElementById(idNo).value;
             const type = document.getElementById(idType).value;
             const amount = document.getElementById(idAmt).value;
@@ -500,11 +501,11 @@
             if (!amount || amount <= 0) { alert("กรุณาระบุจำนวนเงิน (บาท) ด้วยครับ!"); return; }
 
             const payload = { action: "savePayment", studentNo, type, amount: Number(amount), fileData: "-" };
-            const btn = btnElement || event.target;
+            const btn = isAdminPanel ? document.getElementById("adminSubmitBtn") : document.getElementById("submitBtn");
             const oldText = btn.innerText;
 
             const sendToServer = (dataPayload) => {
-                btn.innerText = "กำลังประมวลผล..."; btn.disabled = true;
+                btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
 
                 fetch(BACKEND_URL, {
                     method: "POST",
@@ -514,17 +515,16 @@
                 .then(res => res.json())
                 .then(resData => {
                     btn.innerText = oldText; btn.disabled = false;
-                    
                     if (resData.status === "error") {
-                        alert("❌ เกิดข้อผิดพลาดจากระบบ: " + resData.message);
+                        alert("❌ ข้อผิดพลาด: " + resData.message);
                         return;
                     }
 
-                    alert(resData.message || "บันทึกยอดเงินเรียบร้อย!");
+                    alert(resData.message);
                     document.getElementById(idAmt).value = "";
                     if(idFile && document.getElementById(idFile)) document.getElementById(idFile).value = "";
                     
-                    if(resData.paymentId && !IsAdmin) {
+                    if(resData.paymentId && !IsAdmin && !isAdminPanel) {
                         lastPaymentId = resData.paymentId;
                         document.getElementById('undoSection').classList.remove('hidden');
                         clearTimeout(undoTimeout);
@@ -537,7 +537,7 @@
                 })
                 .catch(err => {
                     btn.innerText = oldText; btn.disabled = false;
-                    alert("❌ เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว กรุณาลองใหม่อีกครั้ง");
+                    alert("❌ เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว");
                 });
             };
 

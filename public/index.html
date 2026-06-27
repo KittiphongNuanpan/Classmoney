@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบเงินห้อง ม.5/2</title>
+    <title>เงิน</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .sticky-col { position: sticky; left: 0; background-color: inherit; z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
@@ -21,16 +21,16 @@
         </div>
 
         <div class="bg-indigo-950 text-white p-5 md:p-6 rounded-3xl shadow-lg text-center relative overflow-hidden">
-            <h1 class="text-xl md:text-2xl font-bold relative z-10">💰 ระบบเงินห้องเรียน ม.5/2</h1>
-            <p class="text-indigo-200 text-xs md:text-sm mt-1.5 relative z-10">สัปดาห์ละ 10 บาท เริ่ม 7 มิ.ย. 2026</p>
+            <h1 class="text-xl md:text-2xl font-bold relative z-10">💰 เงิน</h1>
+            <p class="text-indigo-200 text-xs md:text-sm mt-1.5 relative z-10">สัปดาห์ละ 10 บาท เริ่ม 8 มิ.ย. 2026</p>
             <p id="globalSpecialTargetBanner" class="hidden mt-3 bg-rose-600/30 text-rose-100 text-[11px] md:text-xs font-bold py-1 px-4 rounded-full w-fit mx-auto border border-rose-500/50">
-                🚨 ยอดเฉพาะกิจปัจจุบัน: <span id="specialQuotaValue">0</span> บาท/คน
+                🚨 มีการเรียกเก็บยอดเฉพาะกิจแยกเป็นรายคนภายในห้องเรียน
             </p>
         </div>
 
         <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
             <div class="bg-indigo-50 p-3 rounded-2xl flex flex-col justify-center">
-                <span class="text-[10px] md:text-xs text-indigo-600 font-bold block">เกณฑ์ปัจจุบัน/คน</span>
+                <span class="text-[10px] md:text-xs text-indigo-600 font-bold block">บาท/คน</span>
                 <span id="currentQuota" class="text-base md:text-lg font-bold text-indigo-900">0 บาท</span>
             </div>
             <div class="bg-emerald-50 p-3 rounded-2xl flex flex-col justify-center">
@@ -42,7 +42,7 @@
                 <span id="totalExpense" class="text-base md:text-lg font-bold text-red-700">0 บาท</span>
             </div>
             <div class="bg-slate-100 p-3 rounded-2xl flex flex-col justify-center" id="balanceCard">
-                <span id="balanceTitle" class="text-[10px] md:text-xs font-bold block text-slate-600">คงเหลือในบัญชี</span>
+                <span id="balanceTitle" class="text-[10px] md:text-xs font-bold block text-slate-600">คงเหลือทั้งหมด</span>
                 <span id="netBalance" class="text-base md:text-lg font-bold">0 บาท</span>
             </div>
         </div>
@@ -59,7 +59,7 @@
                         <h2 class="text-lg font-bold text-indigo-900">📢 จ่ายเงินห้อง / แจ้งโอน</h2>
                         <button onclick="document.getElementById('qrModal').classList.remove('hidden')" class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-xl text-xs md:text-sm font-bold hover:bg-indigo-200 transition active:scale-95 shadow-sm border border-indigo-200">💳 ช่องทางการโอน</button>
                     </div>
-                    <span class="bg-rose-100 text-rose-700 text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-lg w-fit">💵 หากจ่ายเป็นเงินสด ให้จ่ายที่ "จีโน่" ได้เลย</span>
+                    <span class="bg-rose-100 text-rose-700 text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-lg w-fit">💵 หากจ่ายเป็นเงินสด ให้จ่ายที่ จีโน่</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
@@ -82,7 +82,7 @@
                         <input type="file" id="slipFile" accept="image/*" class="w-full text-sm text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
                     </div>
                 </div>
-                <button id="submitBtn" onclick="submitPayment('userNo', 'payType', 'customAmount', 'slipFile')" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-base hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition active:scale-[0.98]">🚀 บันทึกยอดเข้าบัญชี</button>
+                <button id="submitBtn" onclick="submitPayment('userNo', 'payType', 'customAmount', 'slipFile', false)" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-base hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition active:scale-[0.98]">🚀 บันทึกยอดเข้าบัญชี</button>
                 
                 <div id="undoSection" class="hidden mt-4 p-4 bg-rose-50 border-2 border-rose-200 rounded-xl text-center animate-pulse">
                     <span class="text-xs md:text-sm text-rose-700 block mb-3 font-bold">เพิ่งกดโอนผิดคนใช่ไหม? (ทำรายการได้ภายใน 5 นาที)</span>
@@ -93,24 +93,36 @@
             <div id="adminActionZone" class="hidden space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-rose-50 p-4 rounded-3xl border border-rose-200 space-y-3">
-                        <h3 class="font-bold text-rose-900 text-sm">🎯 สร้างยอดเฉพาะกิจ (หารอัตโนมัติ)</h3>
+                        <h3 class="font-bold text-rose-900 text-sm">🎯 สร้างยอดเฉพาะกิจ</h3>
                         <div class="grid grid-cols-1 gap-2 text-sm">
-                            <input type="text" id="targetDesc" placeholder="ชื่อเป้าหมาย (เช่น ค่ากีฬาสี)" class="border p-2.5 rounded-xl bg-white">
-                            <input type="number" id="targetTotal" placeholder="ยอดรวม (เช่น 500)" class="border p-2.5 rounded-xl bg-white font-bold text-rose-700">
+                            <input type="text" id="targetDesc" placeholder="ชื่อเป้าหมาย (เช่น ค่าของขวัญครู)" class="border p-2.5 rounded-xl bg-white">
+                            <select id="targetMethod" onchange="toggleTargetMethod()" class="border p-2.5 rounded-xl bg-white font-medium">
+                                <option value="divide">➗ หารเท่ากันทุกคน (31 คน)</option>
+                                <option value="custom">🎯 ระบุยอดเจาะจงรายบุคคล</option>
+                            </select>
+                            <div id="divTotalZone">
+                                <input type="number" id="targetTotal" oninput="previewPerPerson()" placeholder="ยอดรวมทั้งหมด (เช่น 620)" class="w-full border p-2.5 rounded-xl bg-white font-bold text-rose-700">
+                                <p id="perPersonPreview" class="hidden text-[11px] font-bold text-rose-700 mt-1.5 bg-rose-100 px-2 py-1 rounded-lg">💡 คนละ: <span id="perPersonCalc">0</span> บาท</p>
+                            </div>
+                            <div id="divCustomZone" class="hidden space-y-1">
+                                <label class="text-[10px] text-rose-800 font-bold block leading-relaxed">💡 รูปแบบ: <code>เลขที่:ยอดเงิน</code> คั่นด้วยคอมมา<br>เช่น <code>1:20, 3:50, 5:20</code> (คนที่ไม่ระบุ = ไม่ต้องจ่าย)</label>
+                                <textarea id="targetCustomInput" rows="3" placeholder="1:20, 2:20, 3:50" oninput="previewCustomTotal()" class="w-full border p-2 rounded-xl bg-white font-mono text-xs focus:border-rose-400 focus:outline-none"></textarea>
+                                <p id="customTotalPreview" class="hidden text-[11px] font-bold text-rose-700 bg-rose-100 px-2 py-1 rounded-lg">รวมทั้งหมด: <span id="customTotalCalc">0</span> บาท</p>
+                            </div>
                         </div>
-                        <button onclick="createSpecialTarget()" class="w-full bg-rose-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">⚡ คำนวณและตั้งเป้าหมาย</button>
+                        <button id="btnCreateTarget" onclick="createSpecialTarget()" class="w-full bg-rose-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm shadow-sm">⚡ ตั้งเป้าหมายเฉพาะกิจ</button>
                     </div>
                     <div class="bg-amber-50 p-4 rounded-3xl border border-amber-200 space-y-3">
                         <h3 class="font-bold text-amber-900 text-sm">💵 คีย์เงินแทนสมาชิก</h3>
                         <div class="grid grid-cols-2 gap-2 text-sm">
                             <select id="adminStudentId" class="border p-2.5 rounded-xl bg-white col-span-2"></select>
-                            <select id="adminPayType" class="border p-2.5 rounded-xl bg-white">
+                            <select id="adminPayType2" class="border p-2.5 rounded-xl bg-white">
                                 <option value="รายอาทิตย์">รายอาทิตย์</option>
                                 <option value="ยอดเฉพาะกิจ">เฉพาะกิจ</option>
                             </select>
                             <input type="number" id="adminCashAmount" placeholder="ยอดเงิน" class="border p-2.5 rounded-xl bg-white font-bold">
                         </div>
-                        <button id="adminSubmitBtn" onclick="submitPayment('adminStudentId', 'adminPayType', 'adminCashAmount', null, true)" class="w-full bg-amber-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">💾 บันทึก</button>
+                        <button id="adminSubmitBtn" onclick="submitPayment('adminStudentId', 'adminPayType2', 'adminCashAmount', null, true)" class="w-full bg-amber-600 text-white py-2 rounded-xl font-bold active:scale-95 text-sm">💾 บันทึก</button>
                     </div>
                     <div class="bg-emerald-50 p-4 rounded-3xl border border-emerald-200 space-y-3">
                         <h3 class="font-bold text-emerald-900 text-sm">📝 บันทึกรายจ่าย/เงินนอก</h3>
@@ -180,7 +192,7 @@
             <button onclick="document.getElementById('qrModal').classList.add('hidden')" class="absolute top-4 right-5 text-indigo-200 hover:text-white font-black text-2xl transition-colors drop-shadow-md z-10">&times;</button>
             <div class="bg-gradient-to-b from-[#00A950] to-[#008A41] p-5 text-center">
                 <h3 class="text-white font-bold text-lg tracking-wide">แสกนเพื่อโอนเงินเข้ากองกลาง</h3>
-                <p class="text-emerald-100 text-xs mt-1">ม.5/2</p>
+                <p class="text-emerald-100 text-xs mt-1">ม.6/2</p>
             </div>
             <div class="p-6 text-center space-y-5 bg-white">
                 <div class="p-3 border-2 border-dashed border-slate-200 rounded-2xl mx-auto w-48 h-48 flex items-center justify-center bg-slate-50">
@@ -210,22 +222,38 @@
     <script>
         const BACKEND_URL = "/api";
         const ADMIN_PASSWORD = "1234";
-        const START_DATE = new Date("2026-06-07T00:00:00+07:00"); 
+        const START_DATE = new Date("2026-06-08T00:00:00+07:00"); 
         let IsAdmin = false;
         let GLOBAL_QUOTA = 0; 
         let GLOBAL_SPECIAL_QUOTA = 0; 
         let lastPaymentId = null;
         let undoTimeout = null;
         
-        const studentNames = {
-            1: "ณเตชะ เกตุพงษ์", 2: "กฤติพงศ์ นวลปาน", 3: "บูรพา บรรณสาร", 4: "ปฐมพงศ์ ศรีประมัย", 5: "อิทธิวัฒน์ นพฤทธิ์",
-            6: "จิรวัฒน์ อ่อนผักแว่น", 7: "ธนพล เวชวิมลรัตนา", 8: "นรเศรษฐ์ จึงจริยานนท์", 9: "สิรภัทร วงศ์ขัน", 10: "โชติกา บุญเสือ",
-            11: "เนตรนภิศ จำพันธ์", 12: "จิตรสิณี ณ", 13: "ชลธิชา สว่างกุล", 14: "ฐิติรัตน์ ธรรมวิจิตร", 15: "ณัฐชนันท์พร สุริหะ",
-            16: "ณัฏฐณิชา พิชัยพัฒนาเจริญ", 17: "ณัฐธิดา โสมนา", 18: "นภัสร ดาวเรรัมย์", 19: "เบ็ญจพร แตงเจริญ", 20: "ปราณปรียา พุทธศาสน์ศรัทธา",
-            21: "พัชรพร เที่ยงธรรม", 22: "ภิรดา จิตวิกร", 23: "รวิสรา วังหนอง", 24: "รุ่งกาญจน์ อุณหะพันธุ์", 25: "วิชญาดา โลตุฤทธิ์",
-            26: "ศศิวิมล ไรน์", 27: "สถิตย์ฤทัย พันธุบุศย์", 28: "อริสรา ท่อนจันทร์", 29: "อัญชลี บัวคำศรี", 30: "ภัทรนิษฐ์ เมืองคำ",
-            31: "ชื่อคนเพิ่มคนที่ 31"
-        };
+        const MEMBERS = [
+            "ณเตชะ เกตุพงษ์", "กฤติพงศ์ นวลปาน", "บูรพา บรรณสาร", "ปฐมพงศ์ ศรีประมัย", "อิทธิวัฒน์ นพฤทธิ์",
+            "จิรวัฒน์ อ่อนผักแว่น", "ธนพล เวชวิมลรัตนา", "นรเศรษฐ์ พบนิรันดร์ จึงจริยานนท์", "สิรภัทร วงศ์ขัน", "โชติกา บุญเสือ",
+            "เนตรนภิศ จำพันธ์", "จิตรสิณี ณ มหาไชย", "ชลธิชา สว่างกุล", "ฐิติรัตน์ ธรรมวิจิตร", "ณัฐชนันท์พร สุริหะ",
+            "ณัฏฐณิชา พิชัยพัฒนาเจริญ", "ณัฐธิดา โสมนา", "นภัสร ดาวเรรัมย์", "เบญญพร แตงเจริญ", "ปราณปรียา พุทธศาสน์ศรัทธา",
+            "พัชรพร เที่ยงธรรม", "ภิรดา จิตวิกร", "รวิสรา วังหนอง", "รุ่งกาญจน์ อุณหะพันธุ์", "วิชญาดา โลตุฤทธิ์",
+            "ศศิวิมล ไรน์", "ศุจิกา บุญร่วม", "สถิตย์ฤทัย พันธุบุศย์", "อริสรา ท่อนจันทร์", "อัญชลี บัวคำศรี",
+            "ภัทรนิษฐ์ เมืองคำ"
+        ];
+
+        function showAutoCompleteToast() {
+            // สร้าง toast แจ้งว่าเฉพาะกิจครบแล้ว
+            const toast = document.createElement("div");
+            toast.innerText = "🎉 ยอดเฉพาะกิจชำระครบแล้ว! ระบบลบเป้าหมายออกให้อัตโนมัติ";
+            toast.style.cssText = `
+                position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+                background: #065f46; color: #fff; padding: 12px 20px; border-radius: 14px;
+                font-size: 13px; font-weight: bold; z-index: 9999;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                transition: opacity 0.5s; white-space: nowrap;
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = "0"; }, 3000);
+            setTimeout(() => { toast.remove(); }, 3600);
+        }
 
         window.onload = function() {
             calculateAutoQuota();
@@ -242,6 +270,14 @@
                 GLOBAL_QUOTA = passedWeeks * 10;
             }
             document.getElementById("currentQuota").innerText = GLOBAL_QUOTA + " บาท";
+        }
+
+        function parseSqliteDate(dateStr) {
+            if (!dateStr) return new Date();
+            if (!dateStr.includes('T')) {
+                return new Date(dateStr.replace(' ', 'T') + 'Z');
+            }
+            return new Date(dateStr);
         }
 
         function getDynamicWeeks() {
@@ -302,11 +338,11 @@
             const select = document.getElementById("userNo");
             const adminSelect = document.getElementById("adminStudentId");
             select.innerHTML = ""; adminSelect.innerHTML = "";
-            const totalStudents = Object.keys(studentNames).length;
+            const totalStudents = MEMBERS.length;
             for (let i = 1; i <= totalStudents; i++) {
-                let opt = new Option(`${i}. ${studentNames[i]}`, i);
+                let opt = new Option(`${i}. ${MEMBERS[i-1]}`, i);
                 select.add(opt);
-                adminSelect.add(new Option(`${i}. ${studentNames[i]}`, i));
+                adminSelect.add(new Option(`${i}. ${MEMBERS[i-1]}`, i));
             }
             fetchCurrentDashboard();
         }
@@ -315,19 +351,57 @@
             alert(`ข้อมูลการค้างชำระของ: ${name}\n\n⚠️ ค้างจ่ายงวดที่: ${missingText}\n💸 รวมเป็นเงินที่ต้องจ่าย: ${totalDebt} บาท`);
         }
 
+        function toggleTargetMethod() {
+            const method = document.getElementById("targetMethod").value;
+            if (method === "divide") {
+                document.getElementById("divTotalZone").classList.remove("hidden");
+                document.getElementById("divCustomZone").classList.add("hidden");
+            } else {
+                document.getElementById("divTotalZone").classList.add("hidden");
+                document.getElementById("divCustomZone").classList.remove("hidden");
+            }
+        }
+
+        function previewPerPerson() {
+            const total = Number(document.getElementById("targetTotal").value);
+            const preview = document.getElementById("perPersonPreview");
+            if (total > 0) {
+                document.getElementById("perPersonCalc").innerText = Math.ceil(total / 31);
+                preview.classList.remove("hidden");
+            } else {
+                preview.classList.add("hidden");
+            }
+        }
+
+        function previewCustomTotal() {
+            const text = document.getElementById("targetCustomInput").value;
+            const preview = document.getElementById("customTotalPreview");
+            let total = 0;
+            text.split(",").forEach(p => {
+                const parts = p.trim().split(":");
+                if (parts.length === 2) {
+                    const amt = parseFloat(parts[1]);
+                    if (!isNaN(amt)) total += amt;
+                }
+            });
+            if (total > 0) {
+                document.getElementById("customTotalCalc").innerText = total;
+                preview.classList.remove("hidden");
+            } else {
+                preview.classList.add("hidden");
+            }
+        }
+
         function fetchCurrentDashboard() {
             const dynWeeks = getDynamicWeeks();
             for(let i=0; i<4; i++) {
-                document.getElementById(`th-w${i+1}`).innerHTML = `W${dynWeeks[i].num}<br><span class="text-[9px] text-slate-400 font-normal">${dynWeeks[i].dateStr}</span>`;
+                document.getElementById(`th-w${i+1}`).innerHTML = `<span class="font-bold text-slate-800 text-[13px] md:text-sm">${dynWeeks[i].dateStr}</span>`;
             }
 
             fetch(`${BACKEND_URL}?action=getDashboardData`)
             .then(res => res.json())
             .then(data => {
-                if(data.status === "error") {
-                    console.error("Database connection issue.");
-                    return;
-                }
+                if(data.status === "error") { return; }
 
                 const memberBody = document.getElementById("memberTableBody");
                 const directLedgerBody = document.getElementById("directLedgerTableBody");
@@ -338,13 +412,22 @@
 
                 if (data.specialTargets && data.specialTargets.length > 0) {
                     data.specialTargets.forEach(t => {
-                        GLOBAL_SPECIAL_QUOTA += Number(t.perPerson);
-                        targetList.innerHTML += `
-                            <div class="flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs">
-                                <span>📌 ${t.title} (รวม ${t.totalAmount}฿ / คนละ <span class="font-bold text-rose-600">${t.perPerson}฿</span>)</span>
-                                <button onclick="deleteSpecialTarget(${t.id})" class="text-white bg-rose-500 px-2 py-1 rounded hover:bg-rose-600">ลบ</button>
-                            </div>
-                        `;
+                        if (t.method === "divide") {
+                            GLOBAL_SPECIAL_QUOTA += Number(t.perPerson);
+                            targetList.innerHTML += `
+                                <div class="flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs">
+                                    <span>📌 ${t.title} (รวม ${t.totalAmount}฿ / คนละ <span class="font-bold text-rose-600">${t.perPerson}฿</span>)</span>
+                                    <button onclick="deleteSpecialTarget(${t.id})" class="text-white bg-rose-500 px-2 py-1 rounded hover:bg-rose-600">ลบ</button>
+                                </div>
+                            `;
+                        } else {
+                            targetList.innerHTML += `
+                                <div class="flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs">
+                                    <span>🎯 ${t.title} (รวม ${t.totalAmount}฿ / เจาะจงบุคคล)</span>
+                                    <button onclick="deleteSpecialTarget(${t.id})" class="text-white bg-rose-500 px-2 py-1 rounded hover:bg-rose-600">ลบ</button>
+                                </div>
+                            `;
+                        }
                     });
                     document.getElementById("adminTargetListZone").classList.remove("hidden");
                     document.getElementById("globalSpecialTargetBanner").classList.remove("hidden");
@@ -353,11 +436,15 @@
                     document.getElementById("globalSpecialTargetBanner").classList.add("hidden");
                 }
 
-                document.getElementById("specialQuotaValue").innerText = GLOBAL_SPECIAL_QUOTA;
-                document.getElementById("th-special-sub").innerText = GLOBAL_SPECIAL_QUOTA > 0 ? `(เป้าหมาย ${GLOBAL_SPECIAL_QUOTA} ฿)` : "(ยังไม่มี)";
+                const hasAnySpecial = data.specialTargets && data.specialTargets.length > 0;
+                const specialQuotaEl = document.getElementById("specialQuotaValue");
+                if (specialQuotaEl) specialQuotaEl.innerText = GLOBAL_SPECIAL_QUOTA;
+                document.getElementById("th-special-sub").innerText = hasAnySpecial 
+                    ? (GLOBAL_SPECIAL_QUOTA > 0 ? `คนละ ${GLOBAL_SPECIAL_QUOTA} ฿` : "(เจาะจงรายคน)") 
+                    : "(รอตั้งเป้าหมาย)";
 
                 let studentWallets = {};
-                const totalStudents = Object.keys(studentNames).length;
+                const totalStudents = MEMBERS.length;
                 for(let k=1; k<=totalStudents; k++) studentWallets[k] = { regular: 0, special: 0 }; 
 
                 if (data.payments) {
@@ -400,7 +487,8 @@
                         checksHtml += `<td class="p-3 border-b text-center text-emerald-600 font-bold bg-white">${isPaid ? '✅' : '<span class="text-slate-300">-</span>'}</td>`;
                     }
 
-                    let nameHtml = `<span class="text-slate-400 w-5 inline-block text-xs">${i}.</span> ${studentNames[i]}`;
+                    const currentStudentName = MEMBERS[i-1];
+                    let nameHtml = `<span class="text-slate-400 w-5 inline-block text-xs">${i}.</span> ${currentStudentName}`;
                     if (paidWeeksCount < totalPassedWeeks) {
                         let missingWeeksArr = [];
                         for(let m = paidWeeksCount + 1; m <= totalPassedWeeks; m++) {
@@ -408,18 +496,38 @@
                         }
                         const missingText = missingWeeksArr.join(", ");
                         const totalDebt = missingWeeksArr.length * 10;
-                        nameHtml += ` <span onclick="showAlertMissing('${studentNames[i]}', '${missingText}', ${totalDebt})" class="text-rose-600 text-lg leading-none cursor-pointer hover:scale-125 inline-block transition-transform drop-shadow-sm font-black">*</span>`;
+                        nameHtml += ` <span onclick="showAlertMissing('${currentStudentName}', '${missingText}', ${totalDebt})" class="text-rose-600 text-lg leading-none cursor-pointer hover:scale-125 inline-block transition-transform drop-shadow-sm font-black">*</span>`;
                     }
 
                     let specialColHtml = "";
-                    if (GLOBAL_SPECIAL_QUOTA > 0) {
-                        if (totalSpecial >= GLOBAL_SPECIAL_QUOTA) {
-                            specialColHtml = `<td class="p-3 border-b text-center font-bold text-emerald-600 bg-emerald-50/50">${totalSpecial} / ${GLOBAL_SPECIAL_QUOTA} ฿<br><span class="text-[9px] bg-emerald-100 px-1 rounded">✅ ครบแล้ว</span></td>`;
+                    if (data.specialTargets && data.specialTargets.length > 0) {
+                        let myQuota = 0;
+                        data.specialTargets.forEach(t => {
+                            if (t.method === "divide") {
+                                myQuota += Number(t.perPerson);
+                            } else if (t.method === "custom" && t.customData && t.customData !== "-") {
+                                try {
+                                    const mapping = JSON.parse(t.customData);
+                                    // JSON keys are strings, i is number — String(i) ensures correct lookup
+                                    const myAmt = Number(mapping[String(i)] || mapping[i] || 0);
+                                    myQuota += myAmt;
+                                } catch(e) { /* skip malformed JSON */ }
+                            }
+                        });
+
+                        if (myQuota > 0) {
+                            if (totalSpecial >= myQuota) {
+                                specialColHtml = `<td class="p-3 border-b text-center font-bold text-emerald-600 bg-emerald-50/50">${totalSpecial} / ${myQuota} ฿<br><span class="text-[9px] bg-emerald-100 px-1 rounded text-emerald-800">✅ ครบแล้ว</span></td>`;
+                            } else {
+                                const lacking = myQuota - totalSpecial;
+                                specialColHtml = `<td class="p-3 border-b text-center font-bold text-rose-600 bg-rose-50/50">${totalSpecial} / ${myQuota} ฿<br><span class="text-[9px] text-rose-400">ขาด ${lacking} ฿</span></td>`;
+                            }
                         } else {
-                            specialColHtml = `<td class="p-3 border-b text-center font-bold text-rose-600 bg-rose-50/50">${totalSpecial} / ${GLOBAL_SPECIAL_QUOTA} ฿</td>`;
+                            // Has special targets but this person has 0 quota (custom mode, not assigned)
+                            specialColHtml = `<td class="p-3 border-b text-center text-slate-300 bg-white text-[11px]">ไม่มียอด</td>`;
                         }
                     } else {
-                        specialColHtml = `<td class="p-3 border-b text-center font-bold text-rose-300 bg-rose-50/20">-</td>`;
+                        specialColHtml = `<td class="p-3 border-b text-center font-bold text-slate-200 bg-white">-</td>`;
                     }
 
                     memberBody.innerHTML += `
@@ -435,6 +543,48 @@
                     `;
                 }
 
+                // ─── Auto-complete: ถ้าทุกคนจ่ายเฉพาะกิจครบแล้ว → ลบเป้าหมายออกอัตโนมัติ ───
+                if (data.specialTargets && data.specialTargets.length > 0) {
+                    let allDone = true;
+
+                    for (let k = 1; k <= totalStudents; k++) {
+                        // รวมยอดที่คนนี้ต้องจ่ายทุกเป้าหมายรวมกัน
+                        let totalRequired = 0;
+                        data.specialTargets.forEach(t => {
+                            if (t.method === "divide") {
+                                totalRequired += Number(t.perPerson);
+                            } else if (t.method === "custom" && t.customData && t.customData !== "-") {
+                                try {
+                                    const mp = JSON.parse(t.customData);
+                                    totalRequired += Number(mp[String(k)] || mp[k] || 0);
+                                } catch(e) {}
+                            }
+                        });
+
+                        // ถ้ามียอดต้องจ่าย แต่จ่ายไม่ครบ → ยังไม่ done
+                        if (totalRequired > 0 && studentWallets[k].special < totalRequired) {
+                            allDone = false;
+                            break;
+                        }
+                    }
+
+                    if (allDone) {
+                        // ลบทุกเป้าหมายเฉพาะกิจพร้อมกัน แล้ว refresh
+                        const deletePromises = data.specialTargets.map(t =>
+                            fetch(BACKEND_URL, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ action: "deleteSpecialTarget", id: t.id })
+                            })
+                        );
+                        Promise.all(deletePromises).then(() => {
+                            // แสดง toast แจ้งผล
+                            showAutoCompleteToast();
+                            setTimeout(fetchCurrentDashboard, 400);
+                        });
+                    }
+                }
+
                 let income = 0, expense = 0;
                 if (data.ledger && data.ledger.length > 0) {
                     data.ledger.forEach(row => {
@@ -445,11 +595,22 @@
                         let style = row.type === "รายจ่าย" ? "text-red-600 bg-red-50" : "text-emerald-600 bg-emerald-50";
                         let prefix = row.type === "รายจ่าย" ? "-" : "+";
                         let delBtn = IsAdmin ? `<button onclick="deleteLedger(${row.id})" class="bg-rose-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold active:scale-95 shadow">🗑ลบ</button>` : "-";
+                        
+                        let slipLinkHtml = "";
+                        if (row.slipLink && IsAdmin) {
+                            slipLinkHtml = `
+                                <a href="${row.slipLink}" target="_blank" class="inline-flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-md text-[11px] font-bold border border-indigo-200 ml-2 transition active:scale-95">
+                                    📎 ดูสลิป
+                                </a>`;
+                        }
 
                         directLedgerBody.innerHTML += `
                             <tr class="border-b hover:bg-slate-50 transition-colors">
-                                <td class="p-3 text-slate-500 whitespace-nowrap">${new Date(row.date).toLocaleString("th-TH", {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})}</td>
-                                <td class="p-3 font-medium text-slate-700">${row.description}</td>
+                                <td class="p-3 text-slate-500 whitespace-nowrap">${parseSqliteDate(row.date).toLocaleString("th-TH", {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})}</td>
+                                <td class="p-3 font-medium text-slate-700 flex items-center flex-wrap gap-1">
+                                    <span>${row.description}</span>
+                                    ${slipLinkHtml}
+                                </td>
                                 <td class="p-3 text-center"><span class="${style} px-2 py-1 rounded-lg text-[10px] font-bold">${row.type}</span></td>
                                 <td class="p-3 text-right font-bold ${row.type === 'รายจ่าย' ? 'text-red-600' : 'text-emerald-600'}">${prefix}${amount} ฿</td>
                                 <td class="p-3 text-center ${IsAdmin ? '' : 'hidden'}">${delBtn}</td>
@@ -464,23 +625,60 @@
                 document.getElementById("balanceCard").className = (income - expense) >= 0 ? "bg-emerald-50 p-3 rounded-2xl text-emerald-800 flex flex-col justify-center" : "bg-red-50 p-3 rounded-2xl text-red-800 flex flex-col justify-center shadow-inner";
             }).catch(err => console.error("Fetch Error:", err));
         }
-
+        
         function createSpecialTarget() {
-            const desc = document.getElementById("targetDesc").value;
-            const total = document.getElementById("targetTotal").value;
-            if(!desc || !total || total <= 0) { alert("กรุณาใส่ชื่อรายการและยอดรวมให้ครบถ้วนครับ!"); return; }
+            const desc = document.getElementById("targetDesc").value.trim();
+            const method = document.getElementById("targetMethod").value;
+            
+            if(!desc) { alert("กรุณาใส่ชื่อรายการเป้าหมายด้วยครับ!"); return; }
 
-            if(confirm(`รายการนี้ยอดรวม ${total} บาท\nหารสมาชิกทุกคนแบบปัดเศษขึ้น\n\nยืนยันสร้างเป้าหมายนี้ไหม?`)) {
-                fetch(BACKEND_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ action: "addSpecialTarget", title: desc, totalAmount: Number(total) })
-                }).then(res => res.json()).then(data => {
+            let payload = { action: "addSpecialTarget", title: desc, method: method };
+
+            if (method === "divide") {
+                const total = Number(document.getElementById("targetTotal").value);
+                if(!total || total <= 0) { alert("กรุณาใส่ยอดรวมทั้งหมดด้วยครับ!"); return; }
+                const perPerson = Math.ceil(total / 31);
+                payload.totalAmount = total;
+                if(!confirm(`📌 รายการ "${desc}"\n💰 ยอดรวม ${total} บาท\n👥 หาร 31 คน = คนละ ${perPerson} บาท\n\nยืนยันสร้างเป้าหมายนี้ไหม?`)) return;
+            } else {
+                const customText = document.getElementById("targetCustomInput").value.trim();
+                if(!customText) { alert("กรุณาระบุยอดเงินของแต่ละเลขที่ด้วยครับ!\nรูปแบบ: 1:20, 2:30, 5:50"); return; }
+                // Validate format
+                let validCount = 0, totalCustom = 0;
+                customText.split(",").forEach(p => {
+                    const parts = p.trim().split(":");
+                    if (parts.length === 2 && !isNaN(parseInt(parts[0])) && !isNaN(parseFloat(parts[1]))) {
+                        validCount++;
+                        totalCustom += parseFloat(parts[1]);
+                    }
+                });
+                if (validCount === 0) { alert("รูปแบบไม่ถูกต้อง! ต้องเป็น เลขที่:ยอด เช่น 1:20, 3:50"); return; }
+                payload.customText = customText;
+                if(!confirm(`🎯 รายการ "${desc}"\n👥 ระบุยอดเจาะจง ${validCount} คน\n💰 รวมทั้งหมด ${totalCustom} บาท\n\nยืนยันสร้างเป้าหมายนี้ไหม?`)) return;
+            }
+
+            const btn = document.getElementById("btnCreateTarget") || document.querySelector("[onclick=\"createSpecialTarget()\"]");
+            if(btn) { btn.disabled = true; btn.innerText = "กำลังบันทึก..."; }
+
+            fetch(BACKEND_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).then(res => res.json()).then(resData => {
+                if(btn) { btn.disabled = false; btn.innerText = "⚡ ตั้งเป้าหมายเฉพาะกิจ"; }
+                if(resData.status === "success") {
+                    alert("✅ สร้างเป้าหมายเฉพาะกิจสำเร็จแล้ว!");
                     document.getElementById("targetDesc").value = "";
                     document.getElementById("targetTotal").value = "";
+                    document.getElementById("targetCustomInput").value = "";
+                    document.getElementById("perPersonPreview").classList.add("hidden");
+                    document.getElementById("customTotalPreview").classList.add("hidden");
                     fetchCurrentDashboard();
-                });
-            }
+                } else { alert("❌ ข้อผิดพลาด: " + (resData.message || "ไม่ทราบสาเหตุ")); }
+            }).catch(err => {
+                if(btn) { btn.disabled = false; btn.innerText = "⚡ ตั้งเป้าหมายเฉพาะกิจ"; }
+                alert("❌ เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว: " + err.message);
+            });
         }
 
         function deleteSpecialTarget(id) {
@@ -576,7 +774,7 @@
             const desc = document.getElementById("ledgerDesc").value;
             const type = document.getElementById("ledgerType").value;
             const amount = document.getElementById("ledgerAmount").value;
-            if(!desc || !amount) { alert("กรอกให้ครบ"); return; }
+            if(!desc || !amount) { alert("กรุณากรอกข้อมูลให้ครบถ้วนด้วยครับ!"); return; }
 
             fetch(BACKEND_URL, {
                 method: "POST",
@@ -590,12 +788,18 @@
         }
 
         function deleteLedger(id) {
-            if(confirm("ยืนยันลบรายการบัญชีนี้ทิ้ง?")) {
+            if(confirm("⚠️ ยืนยันการลบรายการนี้ใช่ไหม?\n\n*หมายเหตุ: หากเป็นรายการเงินห้อง ระบบจะดึงเงินออกจากสถิติสะสมรายคนของนักเรียนคนนั้นให้อัตโนมัติทันทีเสมือนไม่เคยเกิดขึ้น!")) {
                 fetch(BACKEND_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ action: "deleteLedgerEntry", id: id })
-                }).then(() => fetchCurrentDashboard());
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.message) alert(data.message);
+                    fetchCurrentDashboard();
+                })
+                .catch(err => alert("❌ เกิดข้อผิดพลาดในการลบ"));
             }
         }
     </script>
